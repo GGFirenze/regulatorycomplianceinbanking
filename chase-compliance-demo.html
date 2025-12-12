@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chase UK - Open a Current Account</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏦</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --chase-blue: #0A2540;
+            --chase-light-blue: #1A73E8;
+            --chase-accent: #00A3E0;
+            --chase-white: #FFFFFF;
+            --chase-gray: #F7F9FC;
+            --chase-text: #425466;
+            --chase-dark-text: #1A1F36;
+            --chase-success: #00D395;
+            --chase-border: #E3E8EE;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--chase-gray);
+            color: var(--chase-dark-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: var(--chase-blue);
+            padding: 16px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--chase-accent), var(--chase-light-blue));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            color: var(--chase-white);
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .header-nav a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .header-nav a:hover {
+            color: var(--chase-white);
+        }
+
+        .header-cta {
+            background: var(--chase-white);
+            color: var(--chase-blue);
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .header-cta:hover {
+            background: var(--chase-accent);
+            color: var(--chase-white);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--chase-blue) 0%, #0D3158 50%, var(--chase-blue) 100%);
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            color: var(--chase-white);
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero-text h1 span {
+            color: var(--chase-accent);
+        }
+
+        .hero-text p {
+            color: rgba(255,255,255,0.8);
+            font-size: 18px;
+            margin-bottom: 24px;
+        }
+
+        .hero-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 100px;
+        }
+
+        .hero-feature svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--chase-success);
+        }
+
+        /* Form Container */
+        .form-container {
+            background: var(--chase-white);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .form-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--chase-dark-text);
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            color: var(--chase-text);
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--chase-dark-text);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--chase-border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s;
+            background: var(--chase-white);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--chase-accent);
+            box-shadow: 0 0 0 4px rgba(0,163,224,0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-divider {
+            border: none;
+            border-top: 1px solid var(--chase-border);
+            margin: 28px 0;
+        }
+
+        /* Consent Section */
+        .consent-section {
+            background: linear-gradient(135deg, #F0F7FF 0%, #E8F4FD 100%);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+            border: 2px solid var(--chase-border);
+        }
+
+        .consent-section h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--chase-dark-text);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .consent-section h3 svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--chase-accent);
+        }
+
+        .consent-text {
+            font-size: 13px;
+            color: var(--chase-text);
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        .consent-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .consent-checkbox input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            accent-color: var(--chase-accent);
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .consent-checkbox span {
+            font-size: 14px;
+            color: var(--chase-dark-text);
+            font-weight: 500;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--chase-blue) 0%, #0D3158 100%);
+            color: var(--chase-white);
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(10,37,64,0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Success State */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--chase-success) 0%, #00B383 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        .success-message h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--chase-dark-text);
+            margin-bottom: 12px;
+        }
+
+        .success-message p {
+            color: var(--chase-text);
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+
+        .form-content.hidden {
+            display: none;
+        }
+
+        /* Post-Consent Section */
+        .post-consent-section {
+            display: none;
+            padding: 60px 40px;
+            background: var(--chase-white);
+        }
+
+        .post-consent-section.show {
+            display: block;
+        }
+
+        .post-consent-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--chase-dark-text);
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            color: var(--chase-text);
+            font-size: 16px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--chase-gray);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: var(--chase-accent);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--chase-accent) 0%, var(--chase-light-blue) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--chase-dark-text);
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: var(--chase-text);
+            font-size: 14px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--chase-blue) 0%, #0D3158 100%);
+            padding: 60px 40px;
+            text-align: center;
+            display: none;
+        }
+
+        .cta-section.show {
+            display: block;
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            color: var(--chase-white);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: rgba(255,255,255,0.8);
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .cta-btn {
+            padding: 16px 32px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cta-btn.primary {
+            background: var(--chase-white);
+            color: var(--chase-blue);
+            border: none;
+        }
+
+        .cta-btn.primary:hover {
+            background: var(--chase-accent);
+            color: var(--chase-white);
+            transform: translateY(-2px);
+        }
+
+        .cta-btn.secondary {
+            background: transparent;
+            color: var(--chase-white);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .cta-btn.secondary:hover {
+            border-color: var(--chase-white);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--chase-blue);
+            padding: 40px;
+            color: rgba(255,255,255,0.7);
+            font-size: 13px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--chase-white);
+        }
+
+        /* Analytics Status Indicator */
+        .analytics-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--chase-white);
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-width: 320px;
+            border-left: 4px solid var(--chase-accent);
+        }
+
+        .analytics-status h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--chase-dark-text);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .analytics-status h4::before {
+            content: '📊';
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--chase-border);
+            font-size: 13px;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            color: var(--chase-text);
+        }
+
+        .status-value {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-value.inactive {
+            color: #FF6B6B;
+        }
+
+        .status-value.active {
+            color: var(--chase-success);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .hero-features {
+                justify-content: center;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .header-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">🏦</div>
+                <span class="logo-text">Chase</span>
+            </a>
+            <nav class="header-nav">
+                <a href="#">Current Account</a>
+                <a href="#">Saver Account</a>
+                <a href="#">Investments</a>
+                <a href="#">Help</a>
+                <a href="#" class="header-cta">Get the App</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section with Form -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Open a free current account in <span>minutes</span></h1>
+                <p>Join millions of people who already bank with us. Get 4.5% AER on savings and 1% cashback on essentials.</p>
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                        Real-time insights
+                    </div>
+                    <div class="hero-feature">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                        24/7 support
+                    </div>
+                    <div class="hero-feature">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                        No fees overseas
+                    </div>
+                    <div class="hero-feature">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                        Numberless card
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-container">
+                <div class="form-content" id="formContent">
+                    <div class="form-header">
+                        <h2>Get started today</h2>
+                        <p>Fill in your details to open your account</p>
+                    </div>
+
+                    <form id="registrationForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First name</label>
+                                <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last name</label>
+                                <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" id="email" name="email" placeholder="name@example.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Mobile number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+44 7XXX XXX XXX" required>
+                        </div>
+
+                        <hr class="form-divider">
+
+                        <div class="form-group">
+                            <label for="dob">Date of birth</label>
+                            <input type="text" id="dob" name="dob" placeholder="DD/MM/YYYY" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="postcode">Postcode</label>
+                                <input type="text" id="postcode" name="postcode" placeholder="E14 5JP" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="employmentStatus">Employment status</label>
+                                <select id="employmentStatus" name="employmentStatus" required>
+                                    <option value="">Select...</option>
+                                    <option value="employed">Employed</option>
+                                    <option value="self-employed">Self-employed</option>
+                                    <option value="student">Student</option>
+                                    <option value="retired">Retired</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="annualIncome">Annual income (£)</label>
+                            <select id="annualIncome" name="annualIncome" required>
+                                <option value="">Select...</option>
+                                <option value="0-15000">£0 - £15,000</option>
+                                <option value="15001-30000">£15,001 - £30,000</option>
+                                <option value="30001-50000">£30,001 - £50,000</option>
+                                <option value="50001-75000">£50,001 - £75,000</option>
+                                <option value="75001-100000">£75,001 - £100,000</option>
+                                <option value="100001+">£100,001+</option>
+                            </select>
+                        </div>
+
+                        <!-- Consent Section -->
+                        <div class="consent-section">
+                            <h3>
+                                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                Data Protection & Consent
+                            </h3>
+                            <p class="consent-text">
+                                By providing consent, you agree that your personal information will be processed in accordance with our Privacy Policy and applicable data protection regulations including UK GDPR. Your data will be used for account opening, identity verification, fraud prevention, and regulatory compliance purposes.
+                            </p>
+                            <label class="consent-checkbox">
+                                <input type="checkbox" id="consentCheckbox" required>
+                                <span>I consent to the processing of my personal data as described above and agree to the Terms & Conditions.</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="submitBtn" disabled>
+                            <span>Submit Application</span>
+                            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Success Message -->
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                    </div>
+                    <h3>Application Submitted!</h3>
+                    <p>Thank you for applying. Your data has been securely submitted. You can now explore our features below.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Post-Consent Features Section -->
+    <section class="post-consent-section" id="postConsentSection">
+        <div class="post-consent-content">
+            <div class="section-header">
+                <h2>Explore what Chase can do for you</h2>
+                <p>Discover all the ways we can help you manage your money better</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card" data-feature="savings">
+                    <div class="feature-icon">💰</div>
+                    <h3>Boosted Savings</h3>
+                    <p>Earn 4.5% AER with our boosted saver account</p>
+                </div>
+                <div class="feature-card" data-feature="cashback">
+                    <div class="feature-icon">💳</div>
+                    <h3>1% Cashback</h3>
+                    <p>Get cashback on groceries, transport and fuel</p>
+                </div>
+                <div class="feature-card" data-feature="insights">
+                    <div class="feature-icon">📊</div>
+                    <h3>Smart Insights</h3>
+                    <p>See where your money goes with real-time analytics</p>
+                </div>
+                <div class="feature-card" data-feature="investments">
+                    <div class="feature-icon">📈</div>
+                    <h3>Investments</h3>
+                    <p>Invest with J.P. Morgan Personal Investing</p>
+                </div>
+                <div class="feature-card" data-feature="support">
+                    <div class="feature-icon">💬</div>
+                    <h3>24/7 Support</h3>
+                    <p>Talk to a real person, any time you need</p>
+                </div>
+                <div class="feature-card" data-feature="global">
+                    <div class="feature-icon">🌍</div>
+                    <h3>No Fees Abroad</h3>
+                    <p>Spend overseas with no charges from us</p>
+                </div>
+                <div class="feature-card" data-feature="security">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Bank-level Security</h3>
+                    <p>Your money is protected with FSCS up to £85,000</p>
+                </div>
+                <div class="feature-card" data-feature="switch">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Easy Switch</h3>
+                    <p>Switch to Chase in just 7 working days</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="ctaSection">
+        <div class="cta-content">
+            <h2>Ready to get started?</h2>
+            <p>Download the Chase app and complete your application on your mobile device.</p>
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn primary">
+                    <span>Download the App</span>
+                </a>
+                <a href="#" class="cta-btn secondary">
+                    <span>Learn More</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div>© 2025 Chase UK. J.P. Morgan Europe Limited. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">Accessibility</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Analytics Status Indicator -->
+    <div class="analytics-status">
+        <h4>Analytics Status</h4>
+        <div class="status-item">
+            <span class="status-label">Project A (Fraud/PII)</span>
+            <span class="status-value inactive" id="projectAStatus">
+                <span class="status-dot"></span>
+                Inactive
+            </span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Project B (Autocapture)</span>
+            <span class="status-value inactive" id="projectBStatus">
+                <span class="status-dot"></span>
+                Inactive
+            </span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Consent Given</span>
+            <span class="status-value inactive" id="consentStatus">
+                <span class="status-dot"></span>
+                No
+            </span>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // AMPLITUDE CONFIGURATION
+        // ============================================
+        
+        // Project A: Fraud Analysts (receives PII/form data)
+        const PROJECT_A_API_KEY = '41856b4ac529911cb04286cc2112353e';
+        
+        // Project B: General Analytics (receives autocapture events only)
+        const PROJECT_B_API_KEY = 'f0c053389698a0ae926ad5dfb7e16a36';
+
+        // Track initialization state
+        let projectAInitialized = false;
+        let projectBInitialized = false;
+        let consentGiven = false;
+
+        // ============================================
+        // FORM HANDLING (No tracking before consent)
+        // ============================================
+
+        const form = document.getElementById('registrationForm');
+        const consentCheckbox = document.getElementById('consentCheckbox');
+        const submitBtn = document.getElementById('submitBtn');
+        const formContent = document.getElementById('formContent');
+        const successMessage = document.getElementById('successMessage');
+        const postConsentSection = document.getElementById('postConsentSection');
+        const ctaSection = document.getElementById('ctaSection');
+
+        // Enable/disable submit button based on consent
+        consentCheckbox.addEventListener('change', function() {
+            submitBtn.disabled = !this.checked;
+        });
+
+        // Form submission handler
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (!consentCheckbox.checked) {
+                alert('Please provide consent to continue.');
+                return;
+            }
+
+            // Collect form data (PII)
+            const formData = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                dateOfBirth: document.getElementById('dob').value,
+                postcode: document.getElementById('postcode').value.trim(),
+                employmentStatus: document.getElementById('employmentStatus').value,
+                annualIncome: document.getElementById('annualIncome').value,
+                consentTimestamp: new Date().toISOString()
+            };
+
+            console.log('📋 Form data collected:', formData);
+            console.log('✅ Consent given - initializing Amplitude SDKs...');
+
+            // Mark consent as given
+            consentGiven = true;
+            updateStatusIndicators();
+
+            // Initialize both Amplitude projects
+            await initializeAmplitudeProjects(formData);
+
+            // Show success state
+            formContent.classList.add('hidden');
+            successMessage.classList.add('show');
+            postConsentSection.classList.add('show');
+            ctaSection.classList.add('show');
+        });
+
+        // ============================================
+        // AMPLITUDE INITIALIZATION
+        // ============================================
+
+        async function initializeAmplitudeProjects(formData) {
+            try {
+                // Generate hashed User ID FIRST (before any SDK init)
+                const hashedEmail = await hashEmail(formData.email);
+                console.log('🔑 Generated User ID:', hashedEmail);
+
+                // ========================================
+                // PROJECT A: Fraud Analysts (PII Data)
+                // ========================================
+                console.log('🔐 Initializing Project A (Fraud/PII)...');
+                
+                // Load manual SDK (NOT script loader - gives us control)
+                await loadManualSDK('amplitude-a');
+                
+                // Create a separate instance for Project A
+                window.amplitudeA = window.amplitude.createInstance();
+                
+                // Initialize with userId in config (ensures it's set from first event)
+                window.amplitudeA.init(PROJECT_A_API_KEY, hashedEmail, {
+                    fetchRemoteConfig: true,
+                    autocapture: {
+                        attribution: false,
+                        pageViews: false,
+                        sessions: false,
+                        formInteractions: false,
+                        fileDownloads: false,
+                        elementInteractions: false
+                    }
+                });
+
+                // Add Session Replay after init
+                window.amplitudeA.add(window.sessionReplay.plugin({ sampleRate: 1 }));
+
+                // Set user properties with PII for fraud analysis
+                window.amplitudeA.identify(new window.amplitude.Identify()
+                    .set('email', formData.email)
+                    .set('first_name', formData.firstName)
+                    .set('last_name', formData.lastName)
+                    .set('phone', formData.phone)
+                    .set('postcode', formData.postcode)
+                    .set('employment_status', formData.employmentStatus)
+                    .set('income_bracket', formData.annualIncome)
+                    .set('consent_date', formData.consentTimestamp)
+                );
+
+                // Send form data with PII to Project A
+                window.amplitudeA.track('Account Application Submitted', {
+                    // Personal Information (PII)
+                    first_name: formData.firstName,
+                    last_name: formData.lastName,
+                    full_name: `${formData.firstName} ${formData.lastName}`,
+                    email: formData.email,
+                    phone: formData.phone,
+                    date_of_birth: formData.dateOfBirth,
+                    postcode: formData.postcode,
+                    
+                    // Non-PII attributes
+                    employment_status: formData.employmentStatus,
+                    annual_income: formData.annualIncome,
+                    consent_timestamp: formData.consentTimestamp,
+                    
+                    // Metadata
+                    form_version: '1.0',
+                    source: 'web_application',
+                    compliance_verified: true
+                });
+
+                projectAInitialized = true;
+                console.log('✅ Project A initialized - PII data sent');
+
+                // ========================================
+                // PROJECT B: General Analytics (Autocapture)
+                // ========================================
+                console.log('📊 Initializing Project B (Autocapture)...');
+
+                // Create a separate instance for Project B (using same loaded SDK)
+                window.amplitudeB = window.amplitude.createInstance();
+                
+                // Initialize with userId in config (CRITICAL: ensures User ID from first autocapture event)
+                window.amplitudeB.init(PROJECT_B_API_KEY, hashedEmail, {
+                    fetchRemoteConfig: true,
+                    autocapture: true // Enable all autocapture
+                });
+
+                // Add Session Replay after init
+                window.amplitudeB.add(window.sessionReplay.plugin({ sampleRate: 1 }));
+
+                // Set non-PII user properties only
+                window.amplitudeB.identify(new window.amplitude.Identify()
+                    .set('employment_status', formData.employmentStatus)
+                    .set('income_bracket', formData.annualIncome)
+                    .set('consent_date', formData.consentTimestamp)
+                    .set('user_type', 'applicant')
+                );
+
+                projectBInitialized = true;
+                console.log('✅ Project B initialized - Autocapture active');
+                console.log('👤 Both projects using User ID:', hashedEmail);
+
+                updateStatusIndicators();
+
+            } catch (error) {
+                console.error('❌ Error initializing Amplitude:', error);
+            }
+        }
+
+        // Helper function to load manual SDK (NOT script loader)
+        function loadManualSDK(id) {
+            return new Promise((resolve, reject) => {
+                // Check if SDK already loaded
+                if (window.amplitude && window.amplitude.createInstance) {
+                    console.log('📦 Amplitude SDK already loaded, reusing...');
+                    resolve();
+                    return;
+                }
+
+                // Remove existing script if present
+                const existingScript = document.getElementById(id);
+                if (existingScript) {
+                    existingScript.remove();
+                }
+
+                // Load Analytics SDK (manual - no auto-init)
+                const analyticsScript = document.createElement('script');
+                analyticsScript.id = id;
+                analyticsScript.src = 'https://cdn.amplitude.com/libs/analytics-browser-2.11.2-min.js.gz';
+                analyticsScript.async = false; // Load synchronously
+                
+                analyticsScript.onload = () => {
+                    console.log('📦 Amplitude Analytics SDK loaded');
+                    
+                    // Load Session Replay plugin
+                    const replayScript = document.createElement('script');
+                    replayScript.src = 'https://cdn.amplitude.com/libs/plugin-session-replay-browser-1.8.1-min.js.gz';
+                    replayScript.async = false;
+                    replayScript.onload = () => {
+                        console.log('📦 Session Replay plugin loaded');
+                        resolve();
+                    };
+                    replayScript.onerror = () => reject(new Error('Failed to load Session Replay plugin'));
+                    document.head.appendChild(replayScript);
+                };
+                
+                analyticsScript.onerror = () => reject(new Error('Failed to load Amplitude SDK'));
+                document.head.appendChild(analyticsScript);
+            });
+        }
+
+        // Hash email for user ID (privacy-compliant)
+        async function hashEmail(email) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(email.toLowerCase().trim());
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex.substring(0, 16); // First 16 chars
+        }
+
+        // Update status indicators
+        function updateStatusIndicators() {
+            const projectAStatus = document.getElementById('projectAStatus');
+            const projectBStatus = document.getElementById('projectBStatus');
+            const consentStatus = document.getElementById('consentStatus');
+
+            if (projectAInitialized) {
+                projectAStatus.innerHTML = '<span class="status-dot"></span> Active';
+                projectAStatus.classList.remove('inactive');
+                projectAStatus.classList.add('active');
+            }
+
+            if (projectBInitialized) {
+                projectBStatus.innerHTML = '<span class="status-dot"></span> Active';
+                projectBStatus.classList.remove('inactive');
+                projectBStatus.classList.add('active');
+            }
+
+            if (consentGiven) {
+                consentStatus.innerHTML = '<span class="status-dot"></span> Yes';
+                consentStatus.classList.remove('inactive');
+                consentStatus.classList.add('active');
+            }
+        }
+
+        // ============================================
+        // POST-CONSENT INTERACTIONS
+        // All interactions after consent will be 
+        // automatically tracked by Project B's autocapture
+        // ============================================
+
+        console.log(`
+╔════════════════════════════════════════════════════════════════╗
+║         CHASE UK - REGULATORY COMPLIANCE DEMO                  ║
+╠════════════════════════════════════════════════════════════════╣
+║                                                                ║
+║  📋 BEFORE CONSENT:                                            ║
+║     • No Amplitude SDKs loaded                                 ║
+║     • No events tracked                                        ║
+║     • Form data collected locally only                         ║
+║                                                                ║
+║  ✅ AFTER CONSENT:                                             ║
+║                                                                ║
+║  🔐 PROJECT A (Fraud Analysts):                                ║
+║     • API Key: 41856b4ac529911cb04286cc2112353e               ║
+║     • Receives: Full form data with PII                        ║
+║     • Autocapture: DISABLED                                    ║
+║     • Events: "Account Application Submitted" only             ║
+║     • User Properties: Full PII (name, email, phone, etc.)     ║
+║                                                                ║
+║  📊 PROJECT B (General Analytics):                             ║
+║     • API Key: f0c053389698a0ae926ad5dfb7e16a36               ║
+║     • Receives: All post-consent interactions                  ║
+║     • Autocapture: ENABLED (full)                              ║
+║     • Events: All clicks, page views, etc.                     ║
+║     • User Properties: Non-PII only (employment, income)       ║
+║                                                                ║
+║  🔗 LINKING: Same hashed User ID across both projects          ║
+║                                                                ║
+╚════════════════════════════════════════════════════════════════╝
+        `);
+    </script>
+</body>
+</html>
+
