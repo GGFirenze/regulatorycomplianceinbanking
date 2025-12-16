@@ -634,6 +634,10 @@
             color: var(--chase-success);
         }
 
+        .status-value.anonymous {
+            color: #FFB020;
+        }
+
         .status-dot {
             width: 8px;
             height: 8px;
@@ -911,6 +915,13 @@
     <div class="analytics-status">
         <h4>Analytics Status</h4>
         <div class="status-item">
+            <span class="status-label">Project C (Anonymous)</span>
+            <span class="status-value inactive" id="projectCStatus">
+                <span class="status-dot"></span>
+                Inactive
+            </span>
+        </div>
+        <div class="status-item">
             <span class="status-label">Project A (Fraud/PII)</span>
             <span class="status-value inactive" id="projectAStatus">
                 <span class="status-dot"></span>
@@ -938,16 +949,75 @@
         // AMPLITUDE CONFIGURATION
         // ============================================
         
-        // Project A: Fraud Analysts (receives PII/form data)
+        // Project C: Anonymous/Non-Consented (tracks ALL users anonymously)
+        // Per Privacy & Consent Model: randomized device_id per session, no User ID
+        const PROJECT_C_API_KEY = 'c76c0c6683cda15ad7c28afba04b76a9';
+        
+        // Project A: Fraud Analysts (receives PII/form data) - ONLY after consent
         const PROJECT_A_API_KEY = '41856b4ac529911cb04286cc2112353e';
         
-        // Project B: General Analytics (receives autocapture events only)
+        // Project B: General Analytics (receives autocapture events) - ONLY after consent
         const PROJECT_B_API_KEY = 'f0c053389698a0ae926ad5dfb7e16a36';
 
         // Track initialization state
+        let projectCInitialized = false;
         let projectAInitialized = false;
         let projectBInitialized = false;
         let consentGiven = false;
+        
+        // Generate random device ID for anonymous tracking (new each session per PDF spec)
+        function generateRandomDeviceId() {
+            return 'anon_' + crypto.randomUUID();
+        }
+
+        // ============================================
+        // PROJECT C: ANONYMOUS TRACKING (Starts Immediately)
+        // Per Privacy & Consent Model PDF:
+        // - No cookie persists, device_id randomized per session
+        // - No User ID (will be 'none')
+        // - Used for fraud detection on non-consented users
+        // ============================================
+        
+        async function initializeProjectC() {
+            try {
+                // Load SDK first
+                await loadManualSDK('amplitude-c');
+                
+                // Generate fresh random device ID for this session
+                const randomDeviceId = generateRandomDeviceId();
+                console.log('🔀 Generated anonymous device ID:', randomDeviceId);
+                
+                // Create Project C instance
+                window.amplitudeC = window.amplitude.createInstance();
+                
+                // Initialize with:
+                // - NO User ID (undefined = anonymous)
+                // - Random device_id (no persistence)
+                // - identityStorage: 'none' to prevent cookie/localStorage persistence
+                window.amplitudeC.init(PROJECT_C_API_KEY, undefined, {
+                    deviceId: randomDeviceId,  // Random per session
+                    identityStorage: 'none',   // Don't persist identity
+                    fetchRemoteConfig: true,
+                    autocapture: true          // Track all interactions anonymously
+                });
+
+                // Add Session Replay for anonymous user session analysis
+                window.amplitudeC.add(window.sessionReplay.plugin({ sampleRate: 1 }));
+
+                projectCInitialized = true;
+                console.log('👻 Project C (Anonymous) initialized - tracking all users anonymously');
+                console.log('   Device ID:', randomDeviceId, '(random, non-persistent)');
+                console.log('   User ID: none (anonymous)');
+                
+                updateStatusIndicators();
+
+            } catch (error) {
+                console.error('❌ Error initializing Project C:', error);
+            }
+        }
+
+        // Initialize Project C immediately when page loads
+        initializeProjectC();
 
         // ============================================
         // FORM HANDLING (No tracking before consent)
@@ -1169,9 +1239,16 @@
 
         // Update status indicators
         function updateStatusIndicators() {
+            const projectCStatus = document.getElementById('projectCStatus');
             const projectAStatus = document.getElementById('projectAStatus');
             const projectBStatus = document.getElementById('projectBStatus');
             const consentStatus = document.getElementById('consentStatus');
+
+            if (projectCInitialized) {
+                projectCStatus.innerHTML = '<span class="status-dot"></span> Active (Anon)';
+                projectCStatus.classList.remove('inactive');
+                projectCStatus.classList.add('anonymous');
+            }
 
             if (projectAInitialized) {
                 projectAStatus.innerHTML = '<span class="status-dot"></span> Active';
@@ -1201,14 +1278,25 @@
         console.log(`
 ╔════════════════════════════════════════════════════════════════╗
 ║         CHASE UK - REGULATORY COMPLIANCE DEMO                  ║
+║           (Privacy & Consent Model Implementation)             ║
 ╠════════════════════════════════════════════════════════════════╣
 ║                                                                ║
-║  📋 BEFORE CONSENT:                                            ║
-║     • No Amplitude SDKs loaded                                 ║
-║     • No events tracked                                        ║
-║     • Form data collected locally only                         ║
+║  👻 PROJECT C (Anonymous/Non-Consented) - STARTS IMMEDIATELY:  ║
+║     • API Key: c76c0c6683cda15ad7c28afba04b76a9               ║
+║     • Device ID: Randomized per session (no persistence)       ║
+║     • User ID: None (anonymous)                                ║
+║     • Storage: 'none' (no cookies/localStorage)                ║
+║     • Autocapture: ENABLED                                     ║
+║     • Purpose: Fraud detection on non-consented users          ║
 ║                                                                ║
-║  ✅ AFTER CONSENT:                                             ║
+║  ⚠️  LIMITATIONS (per Privacy & Consent Model PDF):            ║
+║     • Cannot count unique users (same user = multiple hits)    ║
+║     • Limited cohort analysis (UTMs/referrers only)            ║
+║     • Cannot stitch user journeys                              ║
+║                                                                ║
+╠════════════════════════════════════════════════════════════════╣
+║                                                                ║
+║  ✅ AFTER CONSENT (Projects A & B activate):                   ║
 ║                                                                ║
 ║  🔐 PROJECT A (Fraud Analysts):                                ║
 ║     • API Key: 41856b4ac529911cb04286cc2112353e               ║
@@ -1224,11 +1312,10 @@
 ║     • Events: All clicks, page views, etc.                     ║
 ║     • User Properties: Non-PII only (employment, income)       ║
 ║                                                                ║
-║  🔗 LINKING: Same hashed User ID across both projects          ║
+║  🔗 LINKING: Same hashed User ID across A & B only             ║
 ║                                                                ║
 ╚════════════════════════════════════════════════════════════════╝
         `);
     </script>
 </body>
 </html>
-
